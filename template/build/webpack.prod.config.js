@@ -13,7 +13,7 @@ let config = require('../config');
 let projectRoot = path.resolve(__dirname, '../');
 let ReplaceAssets = require('./replaceAssets');
 
-prodConfig.module.loaders.unshift({
+prodConfig.module.rules.unshift({
     test: /\.jsx?$/,
     exclude: /node_modules/,
     include: [
@@ -40,7 +40,6 @@ prodConfig.module.loaders.unshift({
 prodConfig.plugins = (prodConfig.plugins || []).concat([
     new ReplaceAssets(),
     new ExtractTextPlugin("styles.css"),
-    new webpack.optimize.DedupePlugin(),
     new webpack.DefinePlugin({
         'process.env': config.build.env
     }),
