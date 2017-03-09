@@ -19,10 +19,22 @@ prodConfig.module.loaders.unshift({
     include: [
         path.join(projectRoot, 'src')
     ],
-    loader: 'babel'
+    use: [{loader:'babel-loader'}]
 },{
     test:/\.css$/,
-    loader:ExtractTextPlugin.extract('style','css!postcss?sourceMap')
+    use: ExtractTextPlugin.extract({
+        fallback: "style-loader",
+        use: ["css-loader",{
+            loader: 'postcss-loader',
+            options:{
+                plugins: [
+                    require('precss'),
+                    require('autoprefixer')({ browsers: ['last 5 versions','Android >= 4.0', 'iOS >= 7'] })
+                ],
+                sourceMap: "inline"
+            }
+        }]
+    })
 });
 
 prodConfig.plugins = (prodConfig.plugins || []).concat([
@@ -36,9 +48,7 @@ prodConfig.plugins = (prodConfig.plugins || []).concat([
         compress: {
             warnings: false
         },
-        output: {
-            comments: false
-        },
+        comments: false,
         sourceMap: true,
         mangle: true
     })
@@ -54,5 +64,5 @@ module.exports = Object.assign({},prodConfig,{
         publicPath: config.build.assetsPublicPath,
         sourceMapFilename: '[file].map'
     },
-    devtool:'#source-map'
+    devtool:'source-map'
 });
