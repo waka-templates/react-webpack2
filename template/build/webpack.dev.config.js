@@ -48,7 +48,6 @@ devConfig.devServer = {
     inline: true,
     compress: true,
     historyApiFallback: true,
-    colors: true,
     stats: 'normal',
     contentBase: './public',
     publicPath: config.dev.assetsPublicPath
